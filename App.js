@@ -1,11 +1,67 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useRef, useState  } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Button, Image } from 'react-native';
+import icon from '../assets/cat.png'
 
-export default function App() {
+
+export default function FollowMouse() {
+
+  const [location, setLocation] 
+      = useState({
+        x: null,
+        y: null,
+        marginLeft: new Animated.Value(10),
+        marginTop: new Animated.Value(10)
+
+      });
+
+  function onPress(evt){
+          
+    console.log('====================================');
+    var x = evt.nativeEvent.locationX;
+    console.log('====================================');
+    console.log(x);
+    console.log('====================================');
+    var y = evt.nativeEvent.locationY;
+    console.log('====================================');
+    setLocation({
+      x: x,
+      y: y,
+      marginLeft: x-60,
+      marginTop: y-60
+
+    })
+  }
+  function onMove(evt){
+
+    console.log('====================================');
+    console.log(location);
+    console.log('====================================');
+    //setLocation({marginLeft: x, marginTop: y })
+  }
+  function onRelease(){
+    console.log("Realse!");
+  }
+  const {marginTop, marginLeft} = location;
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View
+      onStartShouldSetResponder={()=>true}
+      onMoveShouldSetResponder= {()=>true}
+      onResponderGrant={onPress}
+      onResponderMove={onMove}
+      onResponderRelease = {onRelease}
+      style={styles.container}>
+
+      <Text style={{}}>Show something!</Text>
+     
+      <Animated.Image
+       source = {icon}
+       style={{marginLeft: marginLeft, marginTop: marginTop,height:100,width:100}}
+       >
+
+      </Animated.Image>
+
     </View>
   );
 }
@@ -13,8 +69,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width:500
+
   },
 });
